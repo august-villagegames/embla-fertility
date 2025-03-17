@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation';
 export default function GynoHistoryPregnancy() {
   const router = useRouter();
   const [formData, setFormData] = useState({
+    hasBeenPregnant: '',
     totalPregnancies: '',
     miscarriages: '',
     ectopicPregnancies: '',
@@ -51,73 +52,16 @@ export default function GynoHistoryPregnancy() {
         <h2 className="text-xl text-gray-700 mb-6">Pregnancy Summary</h2>
         
         <div className="space-y-6">
-          {/* Pregnancy Numbers Section */}
-          {[
-            { label: 'Total number of pregnancies', key: 'totalPregnancies' },
-            { label: 'Number of miscarriages (less than 20 weeks)', key: 'miscarriages' },
-            { label: 'Number of ectopic/tubal pregnancies', key: 'ectopicPregnancies' },
-            { label: 'Number of elective terminations (abortions)', key: 'electiveTerminations' },
-            { label: 'Number of full term live births', key: 'fullTermLiveBirths' },
-            { label: 'Number of full term stillborn births', key: 'fullTermStillbirths' },
-            { label: 'Number of premature (less than 37 weeks) live births', key: 'prematureLiveBirths' },
-            { label: 'Number of premature (less than 37 weeks) stillborn births', key: 'prematureStillbirths' },
-          ].map((field) => (
-            <div key={field.key}>
-              <label className="block text-gray-700 mb-2">{field.label}</label>
-              <input
-                type="number"
-                className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-                placeholder="Type here..."
-                value={
-                  formData[field.key as keyof typeof formData] instanceof Set 
-                    ? '' 
-                    : (formData[field.key as keyof typeof formData] as string)
-                }
-                onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
-              />
-            </div>
-          ))}
-
-          {/* Birth Defects Section */}
+          {/* Have you ever been pregnant */}
           <div>
-            <label className="block text-gray-700 mb-2">Any pregnancies with birth defects?</label>
+            <label className="block text-gray-700 mb-2">Have you ever been pregnant before?</label>
             <div className="flex gap-2">
               {['Yes', 'No'].map((option) => (
                 <button
                   key={option}
-                  onClick={() => setFormData({ ...formData, birthDefects: option })}
+                  onClick={() => setFormData({ ...formData, hasBeenPregnant: option })}
                   className={`px-4 py-2 rounded-full text-sm ${
-                    formData.birthDefects === option
-                      ? 'bg-green-100 text-green-800'
-                      : 'bg-gray-100 text-gray-800'
-                  } hover:bg-green-50 transition-colors`}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-            {formData.birthDefects === 'Yes' && (
-              <textarea
-                className="mt-2 w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
-                placeholder="Please explain..."
-                value={formData.birthDefectsExplanation}
-                onChange={(e) => setFormData({ ...formData, birthDefectsExplanation: e.target.value })}
-              />
-            )}
-          </div>
-
-          {/* Current Partner Conceptions */}
-          <div>
-            <label className="block text-gray-700 mb-2">
-              Were any of the previous conceptions with your current partner:
-            </label>
-            <div className="flex gap-2">
-              {['Yes', 'No'].map((option) => (
-                <button
-                  key={option}
-                  onClick={() => setFormData({ ...formData, currentPartnerConceptions: option })}
-                  className={`px-4 py-2 rounded-full text-sm ${
-                    formData.currentPartnerConceptions === option
+                    formData.hasBeenPregnant === option
                       ? 'bg-green-100 text-green-800'
                       : 'bg-gray-100 text-gray-800'
                   } hover:bg-green-50 transition-colors`}
@@ -127,6 +71,87 @@ export default function GynoHistoryPregnancy() {
               ))}
             </div>
           </div>
+
+          {formData.hasBeenPregnant === 'Yes' && (
+            <>
+              {/* Pregnancy Numbers Section */}
+              {[
+                { label: 'Total number of pregnancies', key: 'totalPregnancies' },
+                { label: 'Number of miscarriages (less than 20 weeks)', key: 'miscarriages' },
+                { label: 'Number of ectopic/tubal pregnancies', key: 'ectopicPregnancies' },
+                { label: 'Number of elective terminations (abortions)', key: 'electiveTerminations' },
+                { label: 'Number of full term live births', key: 'fullTermLiveBirths' },
+                { label: 'Number of full term stillborn births', key: 'fullTermStillbirths' },
+                { label: 'Number of premature (less than 37 weeks) live births', key: 'prematureLiveBirths' },
+                { label: 'Number of premature (less than 37 weeks) stillborn births', key: 'prematureStillbirths' },
+              ].map((field) => (
+                <div key={field.key}>
+                  <label className="block text-gray-700 mb-2">{field.label}</label>
+                  <input
+                    type="number"
+                    className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Type here..."
+                    value={
+                      formData[field.key as keyof typeof formData] instanceof Set 
+                        ? '' 
+                        : (formData[field.key as keyof typeof formData] as string)
+                    }
+                    onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
+                  />
+                </div>
+              ))}
+
+              {/* Birth Defects Section */}
+              <div>
+                <label className="block text-gray-700 mb-2">Any pregnancies with birth defects?</label>
+                <div className="flex gap-2">
+                  {['Yes', 'No'].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => setFormData({ ...formData, birthDefects: option })}
+                      className={`px-4 py-2 rounded-full text-sm ${
+                        formData.birthDefects === option
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-gray-100 text-gray-800'
+                      } hover:bg-green-50 transition-colors`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+                {formData.birthDefects === 'Yes' && (
+                  <textarea
+                    className="mt-2 w-full px-4 py-2 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
+                    placeholder="Please explain..."
+                    value={formData.birthDefectsExplanation}
+                    onChange={(e) => setFormData({ ...formData, birthDefectsExplanation: e.target.value })}
+                  />
+                )}
+              </div>
+
+              {/* Current Partner Conceptions */}
+              <div>
+                <label className="block text-gray-700 mb-2">
+                  Were any of the previous conceptions with your current partner:
+                </label>
+                <div className="flex gap-2">
+                  {['Yes', 'No'].map((option) => (
+                    <button
+                      key={option}
+                      onClick={() => setFormData({ ...formData, currentPartnerConceptions: option })}
+                      className={`px-4 py-2 rounded-full text-sm ${
+                        formData.currentPartnerConceptions === option
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-gray-100 text-gray-800'
+                      } hover:bg-green-50 transition-colors`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </>
+          )}
 
           {/* Fertility Treatments */}
           <div>
@@ -219,7 +244,10 @@ export default function GynoHistoryPregnancy() {
             >
               Back
             </button>
-            <button className="px-6 py-2 rounded-full bg-green-700 text-white hover:bg-green-800 transition-colors">
+            <button 
+              onClick={() => router.push('/medHistoryPast')}
+              className="px-6 py-2 rounded-full bg-green-700 text-white hover:bg-green-800 transition-colors"
+            >
               Next
             </button>
           </div>
