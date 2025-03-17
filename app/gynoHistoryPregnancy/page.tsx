@@ -68,7 +68,11 @@ export default function GynoHistoryPregnancy() {
                 type="number"
                 className="w-full px-4 py-2 rounded-full border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-500"
                 placeholder="Type here..."
-                value={formData[field.key as keyof typeof formData]}
+                value={
+                  formData[field.key as keyof typeof formData] instanceof Set 
+                    ? '' 
+                    : (formData[field.key as keyof typeof formData] as string)
+                }
                 onChange={(e) => setFormData({ ...formData, [field.key]: e.target.value })}
               />
             </div>
